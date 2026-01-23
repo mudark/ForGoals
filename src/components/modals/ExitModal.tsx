@@ -1,5 +1,4 @@
-import { useModalStore } from "../../stores/modal";
-
+import { useModalStore } from '../../stores/modal';
 export default function ExitModal() {
   const { setModal } = useModalStore();
   return (

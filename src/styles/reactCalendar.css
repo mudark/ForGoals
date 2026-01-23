@@ -6,7 +6,7 @@
   border-radius: 8px;
 }
 .completed-day::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 5px;
   left: 50%;

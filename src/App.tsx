@@ -1,9 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "./components/Header.tsx";
-import Modal from "./components/modals/Modal.tsx";
-import MainPage from "./pages/MainPage.tsx";
-import GoalPage from "./pages/GoalPage.tsx";
-import ChartPage from "./pages/ChartPage.tsx";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Header from './components/Header.tsx';
+import Modal from './components/modals/Modal.tsx';
+import MainPage from './pages/MainPage.tsx';
+import GoalPage from './pages/GoalPage.tsx';
+import ChartPage from './pages/ChartPage.tsx';
 
 function App() {
   return (

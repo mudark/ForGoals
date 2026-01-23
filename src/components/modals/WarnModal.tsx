@@ -1,25 +1,19 @@
-import ExitModal from "./ExitModal";
+import { useModalStore } from '../../stores/modal';
 
-interface warnModalProps {
-  title: string;
-  content: string;
-  setTitle: (_title: string) => void;
-}
-export default function WarnModal({
-  title,
-  content,
-  setTitle,
-}: warnModalProps) {
+export default function WarnModal() {
+  const { warn, setWarn } = useModalStore();
+  if (warn === '') return null;
   return (
     <div
-      className={
-        title === "" ? `hidden` : `absolute top-0 left-0 w-full [&>*]:p-[5px]`
-      }
+      className={`absolute z-200 top-[10%] left-[10%] w-[80%] shadow-md
+      border border-zinc-300 flex flex-col items-center justify-center
+      bg-white rounded-[20px] p-[10px] [&>*]:p-[5px]`}
     >
-      <ExitModal />
-      <h3>{title}</h3>
-      <p>{content}</p>
-      <button onClick={() => setTitle("")} className={`m-auto`}>
+      <p>{warn}</p>
+      <button
+        onClick={() => setWarn('')}
+        className={`p-[5px] bg-blue-500 rounded-[10px] text-white`}
+      >
         확인
       </button>
     </div>

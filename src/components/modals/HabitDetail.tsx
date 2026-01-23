@@ -1,12 +1,12 @@
-import { type MouseEvent } from "react";
-import { useModalStore } from "../../stores/modal";
-import { useHabitStore } from "../../stores/habits";
-import { format } from "date-fns";
-import Calendar from "react-calendar";
-import "../../styles/reactCalendar.css";
-import SaveHabit from "./SaveHabit";
-import ExitModal from "./ExitModal";
-import SaveDate from "../SaveDate";
+import { type MouseEvent } from 'react';
+import { useModalStore } from '../../stores/modal';
+import { useHabitStore } from '../../stores/habits';
+import { format } from 'date-fns';
+import Calendar from 'react-calendar';
+import '../../styles/reactCalendar.css';
+import SaveHabit from './SaveHabit';
+import ExitModal from './ExitModal';
+import SaveDate from '../SaveDate';
 
 export default function HabitDetail() {
   const setModal = useModalStore((state) => state.setModal);
@@ -14,7 +14,7 @@ export default function HabitDetail() {
   function doHabit(e: MouseEvent) {
     e.preventDefault();
     if (!habit) return;
-    const today = format(new Date(), "yyyy-MM-dd");
+    const today = format(new Date(), 'yyyy-MM-dd');
     if (habit.date.includes(today)) return;
     const updated_habit = { ...habit, date: [...habit.date, today] };
     setHabit(updated_habit);
@@ -34,15 +34,15 @@ export default function HabitDetail() {
     setHabit(null);
   }
   const getTileClassName = ({ date, view }: { date: Date; view: string }) => {
-    if (view == "month") {
-      const date_string = format(date, "yyyy-MM-dd");
-      return habit?.date.includes(date_string) ? "completed-day" : "";
+    if (view == 'month') {
+      const date_string = format(date, 'yyyy-MM-dd');
+      return habit?.date.includes(date_string) ? 'completed-day' : '';
     }
-    return "";
+    return '';
   };
   const addDate = (date: Date | null) => {
     if (!date || !habit) return;
-    const date_string = format(date, "yyyy-MM-dd");
+    const date_string = format(date, 'yyyy-MM-dd');
     if (habit.date.includes(date_string)) return;
     const updated_habit = { ...habit, date: [...habit?.date, date_string] };
     setHabit(updated_habit);
@@ -75,17 +75,14 @@ export default function HabitDetail() {
           locale="ko-KR"
           value={new Date()}
           formatDay={(locale, date) =>
-            date.toLocaleString("en", { day: "numeric" })
+            date.toLocaleString('en', { day: 'numeric' })
           }
           tileClassName={getTileClassName}
         />
       </div>
-      <label>완료 날짜 저장 (테스트)</label>
+      <label>임의의 완료 날짜 저장 (테스트)</label>
       <br />
       <SaveDate selected_day="" onChange={addDate} />
-      {habit?.date.map((day) => (
-        <p key={day}>{day}</p>
-      ))}
     </div>
   );
 }

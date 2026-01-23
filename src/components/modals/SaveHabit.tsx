@@ -1,15 +1,17 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
-import { useModalStore } from "../../stores/modal";
-import { useHabitStore } from "../../stores/habits";
-import { format } from "date-fns";
-import ExitModal from "./ExitModal";
-import SaveDate from "../SaveDate";
+import { useState, type ChangeEvent, type FormEvent } from 'react';
+import { useModalStore } from '../../stores/modal';
+import { useHabitStore } from '../../stores/habits';
+import { format } from 'date-fns';
+import ExitModal from './ExitModal';
+import SaveDate from '../SaveDate';
+import WarnModal from './WarnModal';
 
 export default function SaveHabit() {
   const { habits, setHabits, habit } = useHabitStore();
   const show_add = !habit ? `생성` : `수정`;
-  const [name, setName] = useState("");
-  const [today, setToay] = useState(format(new Date(), "yyyy-MM-dd"));
+  const [name, setName] = useState(habit?.name ?? '');
+  const [today, setToay] = useState(format(new Date(), 'yyyy-MM-dd'));
+  const { setWarn } = useModalStore();
   const setModal = useModalStore((state) => state.setModal);
   function inputName(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -17,6 +19,16 @@ export default function SaveHabit() {
   }
   function updateHabit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (name === '') {
+      setWarn('습관 이름을 입력해주세요.');
+      return;
+    } else if (
+      habit?.name !== name &&
+      habits.some((_habit) => _habit.name === name)
+    ) {
+      setWarn('존재하는 습관 이름입니다.');
+      return;
+    }
     const newHabit: Habit = {
       name: name,
       start_day: habit?.start_day || today,
@@ -30,10 +42,11 @@ export default function SaveHabit() {
   }
   const changeToday = (date: Date | null) => {
     if (!date) return;
-    setToay(format(date, "yyyy-MM-dd"));
+    setToay(format(date, 'yyyy-MM-dd'));
   };
   return (
     <div>
+      <WarnModal />
       <ExitModal />
       <h3 className={`text-center text-[1.3em] font-[600]`}>습관 {show_add}</h3>
       <form

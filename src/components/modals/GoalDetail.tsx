@@ -1,10 +1,10 @@
-import { useGoalStore } from "../../stores/goals";
-import { useModalStore } from "../../stores/modal";
-import SaveGoal from "./SaveGoal";
-import ExitModal from "./ExitModal";
+import { useGoalStore } from '../../stores/goals';
+import { useModalStore } from '../../stores/modal';
+import SaveGoal from './SaveGoal';
+import ExitModal from './ExitModal';
 
 export default function GoalDetail() {
-  const { goals, setGoals, goal } = useGoalStore();
+  const { goals, setGoals, goal, addSuccess } = useGoalStore();
   const { setModal } = useModalStore();
   function updateGoal() {
     setModal(<SaveGoal />);
@@ -14,6 +14,7 @@ export default function GoalDetail() {
     setModal(null);
   }
   function doGoal() {
+    addSuccess();
     deleteGoal();
   }
   return (

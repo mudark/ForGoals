@@ -1,12 +1,13 @@
-import { type MouseEvent } from "react";
-import { useGoalStore } from "../stores/goals";
-import { useModalStore } from "../stores/modal";
-import SaveGoal from "../components/modals/SaveGoal";
-import GoalDetail from "../components/modals/GoalDetail";
+import { useEffect, type MouseEvent } from 'react';
+import { useGoalStore } from '../stores/goals';
+import { useModalStore } from '../stores/modal';
+import SaveGoal from '../components/modals/SaveGoal';
+import GoalDetail from '../components/modals/GoalDetail';
+import FailGoals from '../components/modals/FailGoals';
 
 export default function GoalPage() {
-  const { goals, setGoal } = useGoalStore();
-  const setModal = useModalStore((state) => state.setModal);
+  const { goals, setGoal, failure, setFailure } = useGoalStore();
+  const { modal, setModal } = useModalStore();
   function addGoal(e: MouseEvent) {
     e.preventDefault();
     setGoal(null);
@@ -17,6 +18,18 @@ export default function GoalPage() {
     setGoal(goal);
     setModal(<GoalDetail />);
   }
+  useEffect(() => {
+    if (modal || goals.length === 0) return;
+    const filtered_goals = goals.filter((_goal) => {
+      const today = new Date().setHours(0, 0, 0, 0);
+      const expired_day = new Date(_goal.expired_day).getTime();
+      return expired_day < today;
+    });
+    if (filtered_goals.length > 0) {
+      setModal(<FailGoals />);
+      setFailure(failure + filtered_goals.length);
+    }
+  }, [goals, modal, setModal, failure, setFailure]);
   return (
     <div className={`mt-[30px] m-auto max-w-[800px] w-[96%] p-[10px]`}>
       <button

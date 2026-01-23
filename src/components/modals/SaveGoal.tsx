@@ -1,47 +1,70 @@
-import { useReducer, type ChangeEvent } from "react";
-import { useGoalStore } from "../../stores/goals";
-import { useModalStore } from "../../stores/modal";
-import { format } from "date-fns";
-import SaveDate from "../SaveDate";
-import ExitModal from "./ExitModal";
+import { useReducer, type ChangeEvent } from 'react';
+import { useGoalStore } from '../../stores/goals';
+import { useModalStore } from '../../stores/modal';
+import { format } from 'date-fns';
+import SaveDate from '../SaveDate';
+import ExitModal from './ExitModal';
+import WarnModal from './WarnModal';
 
 export default function SaveGoal() {
   type GoalFormAction =
-    | { type: "SUBMIT" }
+    | { type: 'SUBMIT' }
     | {
-        type: "NAME" | "CONTENT";
+        type: 'NAME' | 'CONTENT';
         event: ChangeEvent<HTMLInputElement>;
       }
-    | { type: "EXPIRED"; date: Date | null };
+    | { type: 'EXPIRED'; date: Date | null };
 
   function formReducer(state: Goal, action: GoalFormAction) {
     switch (action.type) {
-      case "NAME":
+      case 'NAME':
         return { ...state, name: action.event.target.value };
-      case "CONTENT":
+      case 'CONTENT':
         return { ...state, content: action.event.target.value };
-      case "EXPIRED":
+      case 'EXPIRED':
         const date_string = action.date
-          ? format(action.date, "yyyy-MM-dd")
-          : "";
+          ? format(action.date, 'yyyy-MM-dd')
+          : '';
         return { ...state, expired_day: date_string };
     }
     return state;
   }
   const { goals, setGoals, goal } = useGoalStore();
   const setModal = useModalStore((state) => state.setModal);
-  const [state, dispatch] = useReducer(formReducer, {
-    name: "",
-    content: "",
-    expired_day: "",
-  });
+  const [state, dispatch] = useReducer(
+    formReducer,
+    goal ?? {
+      name: '',
+      content: '',
+      expired_day: '',
+    },
+  );
+  const { setWarn } = useModalStore();
   const show_add = !goal ? `생성` : `수정`;
-  function onSubmit() {
+  function onSubmit(e: ChangeEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (state.name === '') {
+      setWarn('목표 이름을 입력해주세요.');
+      return;
+    } else if (
+      goal?.name !== state.name &&
+      goals.some((_goal) => _goal.name === state.name)
+    ) {
+      setWarn('존재하는 목표 이름입니다.');
+      return;
+    } else if (state.content === '') {
+      setWarn('목표 내용을 입력해주세요.');
+      return;
+    } else if (state.expired_day === '') {
+      setWarn('목표 만료 기한을 설정해주세요.');
+      return;
+    }
     setGoals([...goals.filter((_goal) => _goal.name !== goal?.name), state]);
     setModal(null);
   }
   return (
     <div>
+      <WarnModal />
       <ExitModal />
       <h3 className={`text-center text-[1.3em] font-[600]`}>목표 {show_add}</h3>
       <form
@@ -53,17 +76,17 @@ export default function SaveGoal() {
         <label>이름</label>
         <input
           type="text"
-          onChange={(e) => dispatch({ type: "NAME", event: e })}
+          onChange={(e) => dispatch({ type: 'NAME', event: e })}
         />
         <label>내용</label>
         <input
           type="text"
-          onChange={(e) => dispatch({ type: "CONTENT", event: e })}
+          onChange={(e) => dispatch({ type: 'CONTENT', event: e })}
         />
         <label>만료 기한</label>
         <SaveDate
           selected_day={state.expired_day}
-          onChange={(date: Date | null) => dispatch({ type: "EXPIRED", date })}
+          onChange={(date: Date | null) => dispatch({ type: 'EXPIRED', date })}
         />
         <button
           type="submit"

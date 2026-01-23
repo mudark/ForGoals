@@ -1,7 +1,7 @@
-import { useModalStore } from "../stores/modal";
-import { useHabitStore } from "../stores/habits";
-import SaveHabit from "../components/modals/SaveHabit";
-import HabitDetail from "../components/modals/HabitDetail";
+import { useModalStore } from '../stores/modal';
+import { useHabitStore } from '../stores/habits';
+import SaveHabit from '../components/modals/SaveHabit';
+import HabitDetail from '../components/modals/HabitDetail';
 
 export default function MainPage() {
   const { habits, setHabit } = useHabitStore();
