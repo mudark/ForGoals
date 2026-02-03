@@ -3,7 +3,7 @@ import axios from 'axios';
 const kmooc_key = import.meta.env.VITE_KMOOC_KEY??'';
 
 const kmooc_api = axios.create({
-  baseURL:'http://apis.data.go.kr/B552881/kmooc_v2_0',
+  baseURL:'https://apis.data.go.kr/B552881/kmooc_v2_0',
   headers: {'Content-Type':'application/json'},
   params: {
     ServiceKey: kmooc_key,
