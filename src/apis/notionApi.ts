@@ -2,7 +2,7 @@ import axios from 'axios';
 import { parseJwt, token_storage} from '../utils/auth';
 
 const notion_api = axios.create({
-  baseURL: "http://localhost:3001",
+  baseURL: import.meta.env.VITE_PROXY_SERVER,
   headers: {"Content-type": "application/json"}
 });
 // 데이터 저장
