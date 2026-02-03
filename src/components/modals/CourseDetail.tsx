@@ -3,11 +3,7 @@ import { getKmoocDetail } from '../../apis/kmoocApi';
 import { formatTimestamp } from '../../utils/time';
 
 type CourseDetailProps = CommonModalProps & { course: Course };
-export default function CourseDetail({
-  setMsg,
-  setWarn,
-  course,
-}: CourseDetailProps) {
+export default function CourseDetail({ course }: CourseDetailProps) {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['user', course],
     queryFn: async () => await getKmoocDetail(course),

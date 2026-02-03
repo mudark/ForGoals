@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
 import { useModalStore } from '../../../stores/modal';
 import { useUserStore } from '../../../stores/user';
 import { format } from 'date-fns';

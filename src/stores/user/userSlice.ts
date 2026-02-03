@@ -7,7 +7,7 @@ export const createUserSlice: StateCreator<UserStore, [], [], UserSlice> = (set,
   name: '',
   setId: (id) => set({id}),
   setName: (name) => set({name}),
-  logIn: async ({id,name,pw}) => {
+  logIn: async ({id,pw}) => {
     if (!pw) return false;
     const user = await loginToNotion(id, pw);
     console.log("login user : ",user);

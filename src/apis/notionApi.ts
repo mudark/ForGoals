@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { parseJwt, token_storage} from '../utils/auth';
 
-const kmooc_key = import.meta.env.VITE_PROXY_SERVER??'';
-
 const notion_api = axios.create({
   baseURL: "http://localhost:3001",
   headers: {"Content-type": "application/json"}
@@ -62,8 +60,8 @@ export const authJwtToNotion = async (): Promise<User> => {
 // 유저 정보 변경
 export const modifyUser = async (user: User) : Promise<boolean> => {
   const res = await notion_api.put("/notion/name",{user});
-  
-  const new_token = res?.data?.token; // 유저 정보 변경이 성공하면 토큰도 변경해야 함
+  // 유저 정보 변경이 성공하면 토큰도 변경해야 함
+  const new_token = res?.data?.token; 
   if (new_token) {
     token_storage.save(new_token);
   }
