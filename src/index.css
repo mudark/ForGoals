@@ -1,3 +1,48 @@
 @import 'tailwindcss';
 @import 'react-datepicker/dist/react-datepicker.css';
 @import 'react-calendar/dist/Calendar.css';
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
+@layer base {
+  body {
+    font-family: "Pretendard", sans-serif;
+  }
+  button, input, select, textarea {
+    font-family: inherit;
+  }
+}
+@layer components {
+  .modal {
+    * {
+      @apply m-[4px]
+    }
+    h1{
+      @apply text-[1.5em] font-bold text-center w-[90%];
+    }
+    nput {
+      @apply border border-zinc-400 rounded-[5px] w-[70%] 
+          
+    }
+    label {
+      @apply inline-block w-[25%] text-center
+    }
+    button{
+      @apply p-[5px] bg-blue-600 text-white rounded-[10px] 
+    }
+    form {
+      @apply w-[100%] p-0 m-0
+    }
+  }
+  button {
+    @apply hover:scale-[1.03] duration-300 text-white font-bold 
+  }
+  .gradient-btn {
+    @apply w-full p-[4px] text-white font-bold text-center
+    bg-gradient-to-r from-blue-700 to-blue-400 rounded-[4px]
+    shadow-[0_8px_20px_-6px_rgba(37,99,235,0.8)];
+  }
+  input {
+    @apply border border-gray-600 p-[2px]
+    rounded-[4px] whitespace-nowrap flex-1;
+  }
+}

@@ -18,9 +18,9 @@ export default function SaveDate({
       dateFormat="yyyy-MM-dd"
       locale={ko}
       placeholderText="날짜를 선택하세요"
-      wrapperClassName={`w-full ${className ?? ''}`}
-      className={`w-[calc(100%-4px)] border border-gray-600
-      p-[2px] rounded-[4px] `}
+      wrapperClassName={`w-[90%] ${className ?? ''}`}
+      className={`w-full border border-gray-600
+      p-[2px] rounded-[5px] `}
     />
   );
 }

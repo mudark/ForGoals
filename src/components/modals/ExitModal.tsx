@@ -4,10 +4,11 @@ export default function ExitModal() {
   return (
     <button
       type="button"
-      onClick={() => setModal(null)}
+      onClick={() => setModal(null, null)}
       className={`absolute top-[5px] right-[5px] 
         w-[30px] h-[30px] !bg-blue-600 !rounded-[50%] 
-        text-white hover:scale-[1.3] duration-200`}
+        text-white hover:scale-[1.2] duration-200
+        flex justify-center items-center`}
     >
       X
     </button>

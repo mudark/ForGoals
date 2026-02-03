@@ -1,18 +1,38 @@
-.completed-day {
+.reset-calendar-styles .completed-day {
   position: relative;
-  color: #2e7d32 !important;
+  color: #007700 !important;
   font-weight: bold;
-  background-color: #e8f5e9 !important;
-  border-radius: 8px;
+  background-color: #ddffdd !important;
 }
-.completed-day::after {
+.reset-calendar-styles .completed-day::after {
   content: '';
   position: absolute;
   bottom: 5px;
   left: 50%;
   transform: translateX(-50%);
-  width: 6px;
-  height: 6px;
-  background-color: #4caf50;
+  width: 5px;
+  height: 5px;
+  background-color: #00cc00;
   border-radius: 50%;
+}
+/* 캘린더 내부 버튼들을 부모 스타일로부터 보호 */
+.reset-calendar-styles button {
+  background: none !important;
+  color: #000 !important;
+  margin: 0 !important;
+}
+/* 2. 각 요일 칸(월, 화, 수...) 마진 및 패딩 제거 */
+.reset-calendar-styles .react-calendar__month-view__weekdays__weekday {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+/* 일요일 (첫 번째 요일) */
+.reset-calendar-styles .react-calendar__month-view__weekdays__weekday:nth-child(1),
+.reset-calendar-styles .react-calendar__month-view__days__day:nth-child(7n+1) {
+  color: #ff3333 !important;
+}
+/* 토요일 (일곱 번째 요일) */
+.reset-calendar-styles .react-calendar__month-view__weekdays__weekday:nth-child(7),
+.reset-calendar-styles .react-calendar__month-view__days__day:nth-child(7n) {
+  color: #3333ff !important;
 }
