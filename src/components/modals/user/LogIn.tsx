@@ -21,11 +21,11 @@ export default function LogIn({ setWarn, setMsg }: CommonModalProps) {
   return (
     <form className="[&_*]:mx-[5px]">
       <h1>로그인</h1>
-      <label>아이디</label>
-      <input type="text" onChange={changeId} />
+      <label htmlFor="login_id">아이디</label>
+      <input id="login_id" type="text" onChange={changeId} />
       <br />
-      <label>비밀번호</label>
-      <input type="password" onChange={changePw} />
+      <label htmlFor="login_pw">비밀번호</label>
+      <input id="login_pw" type="password" onChange={changePw} />
       <br />
       <button
         className="w-[40%]"

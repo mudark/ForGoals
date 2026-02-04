@@ -38,12 +38,15 @@ export default function FailGoals({
     },
   });
   return (
-    <div className={`h-[90%]`}>
+    <div className="h-[90%] relative">
+      <div
+        className="absolute top-[-10px] right-[-10px] 
+        w-[32px] h-[32px] bg-white"
+      />
       <h1>실패한 목표</h1>
-      <p>X를 눌러도 실패한 목표가 있다면 모달창은 계속 남아있습니다.</p>
       <div className={`flex-1 overflow-y-auto whitespace-nowrap`}>
         {failed_goals.map((goal) => (
-          <div key={goal.name}>
+          <div key={goal.name} className="p-[5px] bg-zinc-200 rounded-[10px]">
             <span>{goal.name}</span>
             <button onClick={() => removeGoal(goal)}>삭제</button>
             <br />

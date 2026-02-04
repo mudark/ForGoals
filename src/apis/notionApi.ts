@@ -44,7 +44,7 @@ export const signUpToNotion = async (user: User): Promise<boolean> => {
 // 토큰 인증, 메인 페이지 초기화할 때 호출됨
 export const authJwtToNotion = async (): Promise<User> => {
   const token = token_storage.get();
-  if (!token) throw new Error('토큰이 없습니다.')
+  if (!token) throw new Error('토큰이 없습니다.');
   const res = await notion_api.post("/notion/jwt",{token});
   const new_token = res?.data?.token; // 서버에서 토큰을 변경하는 경우가 있으니 새 토큰 받음
   //console.log("token : ",token);

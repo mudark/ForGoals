@@ -24,14 +24,14 @@ export default function SingUp({ setWarn, setMsg }: CommonModalProps) {
       }}
     >
       <h1>회원 가입</h1>
-      <label>아이디</label>
-      <input type="text" onChange={changeId} />
+      <label htmlFor="signup_id">아이디</label>
+      <input id="signup_id" type="text" onChange={changeId} />
       <br />
-      <label>비밀번호</label>
-      <input type="password" onChange={changePw} />
+      <label htmlFor="signup_pw">비밀번호</label>
+      <input id="signup_pw" type="password" onChange={changePw} />
       <br />
-      <label>이름</label>
-      <input type="text" onChange={changeName} />
+      <label htmlFor="signup_name">이름</label>
+      <input id="signup_name" type="text" onChange={changeName} />
       <br />
       <button className="gradient-btn">가입하기</button>
     </form>

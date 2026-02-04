@@ -5,9 +5,11 @@ import { formatTimestamp } from '../utils/time';
 import { useModalStore } from '../stores/modal';
 import CourseDetail from '../components/modals/CourseDetail';
 import { Spin } from '../components/Spin';
+import { useEffect, useRef } from 'react';
 
 export default function CoursecPage() {
   const { setModal } = useModalStore();
+  const ref = useRef(null);
   const { data, fetchNextPage, hasNextPage, isFetching, status, error } =
     useInfiniteQuery({
       queryKey: ['kmooc'],
@@ -16,6 +18,23 @@ export default function CoursecPage() {
       getNextPageParam: ({ header }: KmoocResponse) =>
         header.page < header.totalCount ? header.page + 1 : undefined,
     });
+  const onIntersection = (entries: IntersectionObserverEntry[]) => {
+    const first_entry = entries[0];
+    if (first_entry.isIntersecting && hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  };
+  useEffect(() => {
+    const observer = new IntersectionObserver(onIntersection);
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, [hasNextPage, isFetching]);
   if (status === 'error') {
     return <div>에러가 발생했습니다: {error.message}</div>;
   }
@@ -63,23 +82,13 @@ export default function CoursecPage() {
           )),
         )}
       </div>
-      {isFetching ? (
-        <Spin>강좌를 불러오는 중...</Spin>
-      ) : hasNextPage ? (
-        <button
-          type="button"
-          onClick={() => fetchNextPage()}
-          className="w-full p-[4px] text-white font-bold rounded-[4px] 
-          bg-gradient-to-r from-blue-700 to-blue-400 
-          shadow-[0_8px_20px_-6px_rgba(37,99,235,0.8)] 
-          hover:scale-[1.03] duration-200"
-        >
-          더보기
-        </button>
-      ) : (
-        <h1>더 이상 강좌가 없습니다.</h1>
-      )}
-      <div className="h-[30px]"></div>
+      <div ref={hasNextPage ? ref : null}>
+        {isFetching ? (
+          <Spin>강좌를 불러오는 중</Spin>
+        ) : (
+          <h1>더 이상 강좌가 없습니다.</h1>
+        )}
+      </div>
     </BasePage>
   );
 }

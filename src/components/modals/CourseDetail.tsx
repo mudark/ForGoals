@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getKmoocDetail } from '../../apis/kmoocApi';
 import { formatTimestamp } from '../../utils/time';
+import dompurify from 'dompurify';
 
 type CourseDetailProps = CommonModalProps & { course: Course };
 export default function CourseDetail({ course }: CourseDetailProps) {
@@ -67,7 +68,9 @@ export default function CourseDetail({ course }: CourseDetailProps) {
           </p>
           <p>총 주차 : {data.week}</p>
         </div>
-        <div dangerouslySetInnerHTML={{ __html: data.summary }} />
+        <div
+          dangerouslySetInnerHTML={{ __html: dompurify.sanitize(data.summary) }}
+        />
       </div>
     </div>
   );

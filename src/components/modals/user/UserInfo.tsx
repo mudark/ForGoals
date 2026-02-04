@@ -30,8 +30,13 @@ export default function UserInfo({ setWarn, setMsg }: CommonModalProps) {
           mutate();
         }}
       >
-        <label>변경할 이름 : </label>
-        <input type="text" value={changed_name} onChange={changeName} />
+        <label htmlFor="new_user_name">변경할 이름 : </label>
+        <input
+          id="new_user_name"
+          type="text"
+          value={changed_name}
+          onChange={changeName}
+        />
         <button className="gradient-btn">유저 정보 변경</button>
       </form>
     </div>

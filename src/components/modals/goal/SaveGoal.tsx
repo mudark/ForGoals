@@ -74,14 +74,16 @@ export default function SaveGoal({
     <div>
       <h1>목표 {show_add}</h1>
       <form onSubmit={submit}>
-        <label>이름</label>
+        <label htmlFor="new_goal_name">이름</label>
         <input
+          id="new_goal_name"
           type="text"
           value={goal.name ?? ''}
           onChange={(e) => dispatch({ type: 'NAME', event: e })}
         />
-        <label>내용</label>
+        <label htmlFor="new_goal_content">내용</label>
         <input
+          id="new_goal_content"
           type="text"
           value={goal.content ?? ''}
           onChange={(e) => dispatch({ type: 'CONTENT', event: e })}

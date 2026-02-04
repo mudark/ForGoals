@@ -60,8 +60,13 @@ export default function SaveHabit({ setMsg, setWarn, habit }: SaveHabitProps) {
           updateHabit();
         }}
       >
-        <label>이름</label>
-        <input type="text" value={name} onChange={changeName} />
+        <label htmlFor="new_habit_name">이름</label>
+        <input
+          id="new_habit_name"
+          type="text"
+          value={name}
+          onChange={changeName}
+        />
         <button type="submit" className={`gradient-btn`}>
           {show_add}
         </button>
