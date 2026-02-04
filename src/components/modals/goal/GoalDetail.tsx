@@ -8,6 +8,7 @@ export default function GoalDetail({ setWarn, setMsg, goal }: GoalDetailProps) {
   const { deleteGoal, addSuccess } = useUserStore();
   const { setModal } = useModalStore();
   const { mutate: removeGoal } = useMutation({
+    // 목표 삭제
     mutationFn: async () => await deleteGoal(goal),
     onMutate: () => setMsg('목표 삭제 중...'),
     onSuccess: () => setModal(null, null),
@@ -15,6 +16,7 @@ export default function GoalDetail({ setWarn, setMsg, goal }: GoalDetailProps) {
     onSettled: () => setMsg(''),
   });
   const { mutateAsync: doGoal } = useMutation({
+    // 목표 완료
     mutationFn: async () => {
       const [res1, res2] = await Promise.all([addSuccess(), deleteGoal(goal)]);
       if (!res1 || !res2) throw new Error();
@@ -25,10 +27,6 @@ export default function GoalDetail({ setWarn, setMsg, goal }: GoalDetailProps) {
     onError: () => setWarn('목표 완료를 실패했습니다.'),
     onSettled: () => setMsg(''),
   });
-  function updateGoal() {
-    // 목표 수정 모달로 이동
-    setModal(SaveGoal, { goal: goal });
-  }
   return (
     <div className={`[&>button]:bg-zinc-400 [&>button]:w-[30%]`}>
       <h1>{goal?.name}</h1>
@@ -39,7 +37,7 @@ export default function GoalDetail({ setWarn, setMsg, goal }: GoalDetailProps) {
       <button type="button" onClick={async () => doGoal()}>
         완료
       </button>
-      <button type="button" onClick={updateGoal}>
+      <button type="button" onClick={() => setModal(SaveGoal, { goal: goal })}>
         수정
       </button>
       <button type="button" onClick={() => removeGoal()}>

@@ -1,9 +1,10 @@
 import { type ReactNode } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useUserStore } from '../stores/user';
 import { useModalStore } from '../stores/modal';
 import SingUp from './modals/user/SignUp';
 import LogIn from './modals/user/LogIn';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface StyledLinkProps {
   to: string;
@@ -11,8 +12,9 @@ interface StyledLinkProps {
 }
 function StyledLink({ to, children }: StyledLinkProps) {
   // 링크가 가진 url이 현재 주소면 다른 스타일 적용
-  const showActive = `text-blue-700 text-[16px] font-[600] border-b-[3px] border-blue-700`;
-  const showUnactive = ``;
+  const showActive =
+    'text-blue-700 text-[16px] font-[600] border-b-[3px] border-blue-700';
+  const showUnactive = '';
   return (
     <NavLink
       to={to}
@@ -23,8 +25,10 @@ function StyledLink({ to, children }: StyledLinkProps) {
   );
 }
 function Links() {
-  // 로그인 후 보이는 헤더의 링크 집합
+  // 로그인 후 보이는 헤더의 링크 집합과 로그아웃 버튼
   const { logOut } = useUserStore();
+  const query_client = useQueryClient();
+  const navigate = useNavigate();
   return (
     <div className="flex space-between">
       <nav className={`m-auto flex justify-center items-center gap-[10px]`}>
@@ -38,7 +42,15 @@ function Links() {
         [&>button]:text-blue-600 [&>button]:px-[10px] 
         [&>button]:rounded-[10px] [&>button]:hover:scale-[1.03]"
       >
-        <button type="button" onClick={() => logOut()}>
+        <button
+          type="button"
+          onClick={() => {
+            query_client.clear();
+            query_client.removeQueries();
+            logOut();
+            navigate('/');
+          }}
+        >
           로그 아웃
         </button>
       </div>
@@ -46,6 +58,7 @@ function Links() {
   );
 }
 function LogOutHeader() {
+  // 로그 아웃인 상태에서 보이는 헤더
   const { setModal } = useModalStore();
   return (
     <div

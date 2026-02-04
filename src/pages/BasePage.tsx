@@ -9,6 +9,7 @@ export default function BasePage({ children }: { children: ReactNode }) {
   const base_page_style = `mt-[30px] m-auto max-w-[800px] w-[96%] p-[10px] text-center 
     [&>h1]:text-[2em] [&>h1]:font-[600] [&>*]:my-[5px]`;
   if (isFetching) {
+    // 데이터 불러오는 중
     return (
       <div className={base_page_style}>
         <h1>자동 로그인 중입니다.</h1>
@@ -17,6 +18,7 @@ export default function BasePage({ children }: { children: ReactNode }) {
     );
   }
   if (id === '') {
+    // 로그아웃 상태
     return (
       <div className={base_page_style}>
         <h1>안녕하세요.</h1>
@@ -25,6 +27,6 @@ export default function BasePage({ children }: { children: ReactNode }) {
       </div>
     );
   }
-
+  // 로그인 상태
   return <div className={base_page_style}>{children}</div>;
 }

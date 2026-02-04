@@ -12,19 +12,23 @@ import { Spin } from './Spin';
 // 목표 성공률 차트
 export default function GoalSuccessRate() {
   const { initSuccess, initFailure } = useUserStore();
+  // 목표 성공 횟수 불러오기
   const {
     data: _success,
     isLoading: successLoading,
     isError: successError,
   } = useBaseQuery<number>('goal_success', initSuccess);
   const success = _success ?? 0;
+  // 목표 실패 횟수 불러오기
   const {
     data: _failure,
     isLoading: failureLoading,
     isError: failureError,
   } = useBaseQuery<number>('goal_failure', initFailure);
   const failure = _failure ?? 0;
+
   if (successLoading || failureLoading) {
+    // 로딩
     return (
       <div className="w-full h-[150px] text-center">
         <Spin>목표 성공률을 불러오는 중입니다.</Spin>
@@ -32,6 +36,7 @@ export default function GoalSuccessRate() {
     );
   }
   if (successError || failureError) {
+    // 에러
     return (
       <div className="w-full h-[150px] text-center">
         목표 성공률을 못 불러왔습니다.
@@ -51,6 +56,7 @@ export default function GoalSuccessRate() {
     { name: 'Success', value: success, fill: '#00ff00' },
     { name: 'Failure', value: failure, fill: '#ff0000' },
   ];
+  // 목표 달성률 계산
   const rate = ((100 * success) / (failure + success)).toFixed(2) ?? 0;
   return (
     <div className="w-full h-[150px]">

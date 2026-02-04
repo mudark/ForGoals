@@ -5,6 +5,7 @@ import ExitModal from './ExitModal';
 
 export default function Modal() {
   const { modal: ModalContent, payload } = useModalStore();
+  // 공통 모달 props (setWarn, setMsg)
   const { modal_warn, setWarn } = useModalWarn();
   const { modal_loading, setMsg } = useModalLoading();
   if (!ModalContent) return null;

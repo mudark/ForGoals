@@ -9,6 +9,7 @@ import { useEffect, useRef } from 'react';
 
 export default function CoursecPage() {
   const { setModal } = useModalStore();
+  // 무한 스크롤
   const ref = useRef(null);
   const { data, fetchNextPage, hasNextPage, isFetching, status, error } =
     useInfiniteQuery({
@@ -25,6 +26,7 @@ export default function CoursecPage() {
     }
   };
   useEffect(() => {
+    // 가장 아래칸으로 가면 추가 강좌 불러옴
     const observer = new IntersectionObserver(onIntersection);
     if (ref.current) {
       observer.observe(ref.current);
@@ -36,6 +38,7 @@ export default function CoursecPage() {
     };
   }, [hasNextPage, isFetching]);
   if (status === 'error') {
+    // 에러
     return <div>에러가 발생했습니다: {error.message}</div>;
   }
   return (

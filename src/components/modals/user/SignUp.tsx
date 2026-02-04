@@ -4,15 +4,21 @@ import { useModalStore } from '../../../stores/modal';
 import { useMutation } from '@tanstack/react-query';
 
 export default function SingUp({ setWarn, setMsg }: CommonModalProps) {
-  const { signUp } = useUserStore();
+  const { signUp, setId, setName } = useUserStore();
   const { setModal } = useModalStore();
+  // 입력란 초기화
   const [id, changeId] = useInput('');
   const [pw, changePw] = useInput('');
   const [name, changeName] = useInput('');
   const { mutate } = useMutation({
-    mutationFn: async (user: User) => signUp(user),
+    // 회원 가입
+    mutationFn: async (user: User) => await signUp(user),
     onMutate: () => setMsg('회원 가입 중...'),
-    onSuccess: () => setModal(null, null),
+    onSuccess: () => {
+      setId(id);
+      setName(name);
+      setModal(null, null);
+    },
     onError: () => setWarn('회원 가입에 실패했습니다.'),
     onSettled: () => setMsg(''),
   });
@@ -20,7 +26,7 @@ export default function SingUp({ setWarn, setMsg }: CommonModalProps) {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        mutate({ id, name, pw });
+        mutate({ id, name, pw }); // 회원 가입
       }}
     >
       <h1>회원 가입</h1>

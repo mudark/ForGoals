@@ -1,6 +1,7 @@
 import { useModalStore } from '../../stores/modal';
 export default function ExitModal() {
   const { setModal } = useModalStore();
+  // X 버튼 클릭 시 모달 꺼짐
   return (
     <button
       type="button"

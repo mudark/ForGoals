@@ -5,8 +5,10 @@ import { useUserStore } from '../../../stores/user';
 
 export default function UserInfo({ setWarn, setMsg }: CommonModalProps) {
   const { id, name, setName } = useUserStore();
+  // 새 이름 입력란 초기화
   const [changed_name, changeName] = useInput(name);
   const { mutate } = useMutation({
+    // 내 정보 수정
     mutationFn: async () => modifyUser({ id, name: changed_name }),
     onMutate: () => setMsg('이름 수정 중...'),
     onSuccess: () => setName(changed_name),

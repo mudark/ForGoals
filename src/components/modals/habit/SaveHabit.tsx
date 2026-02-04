@@ -10,6 +10,7 @@ type SaveHabitProps = CommonModalProps & { habit: Habit | null };
 export default function SaveHabit({ setMsg, setWarn, habit }: SaveHabitProps) {
   const { habits, insertHabit, modifyHabit } = useUserStore();
   const show_add = !habit ? `생성` : `수정`;
+  // 입력란 초기화
   const [name, changeName] = useInput(habit?.name ?? '');
   // 오늘은 원래 상수지만, 변경 가능함 (테스트용)
   const [today, setToay] = useState(
@@ -17,6 +18,7 @@ export default function SaveHabit({ setMsg, setWarn, habit }: SaveHabitProps) {
   );
   const { setModal } = useModalStore();
   const { mutate } = useMutation({
+    // 습관 생성 또는 수정
     mutationFn: async (new_habit: Habit) => {
       if (!habit) return insertHabit(new_habit);
       else return modifyHabit(habit, new_habit);
@@ -27,7 +29,7 @@ export default function SaveHabit({ setMsg, setWarn, habit }: SaveHabitProps) {
     onSettled: () => setMsg(''),
   });
   function updateHabit() {
-    // 데이터가 있으면 수정하고 없으면 생성함
+    // 기존의 습관이 있으면 수정하고 없으면 생성함
     if (name === '') {
       setWarn?.('습관 이름을 입력해주세요.');
       return;
@@ -38,12 +40,13 @@ export default function SaveHabit({ setMsg, setWarn, habit }: SaveHabitProps) {
       setWarn?.('존재하는 습관 이름입니다.');
       return;
     }
+    // 생성되거나 수정된 습관
     const new_habit: Habit = {
       name: name,
       start_day: today,
       date: habit?.date ?? [],
     };
-    mutate(new_habit);
+    mutate(new_habit); // 습관 생성 또는 수정
   }
   const changeToday = (date: Date | null) => {
     // 시작 날 수정 (테스트용)

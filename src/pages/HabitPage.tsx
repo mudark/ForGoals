@@ -8,10 +8,12 @@ import BasePage from './BasePage';
 export default function HabitPage() {
   const { habits, initHabits } = useUserStore();
   const { setModal } = useModalStore();
+  // 습관 불러오기
   const { isLoading, isError } = useBaseQuery<Habit[]>('habits', initHabits);
   const blue_active_style = `gradient-btn`;
   const title = <h1>당신의 습관</h1>;
   if (isLoading) {
+    // 로딩
     return (
       <BasePage>
         {title}
@@ -28,6 +30,7 @@ export default function HabitPage() {
       </BasePage>
     );
   } else if (isError) {
+    // 에러
     return (
       <BasePage>
         {title}
@@ -43,9 +46,11 @@ export default function HabitPage() {
       </>
     );
   function addHabit() {
+    // 습관 생성 모달 호출
     setModal(SaveHabit, { habit: null });
   }
   function showHabitDetail(habit: Habit) {
+    // 습관 세부 내용 모달 호출
     setModal(HabitDetail, { habit: habit });
   }
   return (

@@ -15,9 +15,10 @@ export default function SaveGoal({
   const setModal = useModalStore((state) => state.setModal);
   const show_add = !_goal ? '생성' : '수정';
   const { mutate } = useMutation({
+    // 목표 생성 또는 수정
     mutationFn: async () => {
-      if (!_goal) return insertGoal(goal);
-      else return modifyGoal(_goal, goal);
+      if (!_goal) return await insertGoal(goal);
+      else return await modifyGoal(_goal, goal);
     },
     onMutate: () => setMsg(`목표 ${show_add} 중 ...`),
     onSuccess: () => setModal(null, null),
@@ -27,23 +28,24 @@ export default function SaveGoal({
   type GoalFormAction =
     | { type: 'NAME' | 'CONTENT'; event: ChangeEvent<HTMLInputElement> }
     | { type: 'EXPIRED'; date: Date | null };
-  // 입력 변경
   function formReducer(state: Goal, action: GoalFormAction) {
+    // 입력란 값 변경
     switch (action.type) {
-      case 'NAME':
+      case 'NAME': // 입력란 이름 변경
         return { ...state, name: action.event.target.value };
-      case 'CONTENT':
+      case 'CONTENT': // 입력란 내용 변경
         return { ...state, content: action.event.target.value };
-      case 'EXPIRED':
+      case 'EXPIRED': // 입력란 날짜 변경
         const date_string = action.date
           ? format(action.date, 'yyyy-MM-dd')
           : '';
         return { ...state, expired_day: date_string };
     }
   }
-  // 제출
+
   function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    // 목표 제출 가능 여부 확인
     if (goal.name === '') {
       setWarn?.('목표 이름을 입력해주세요.');
       return;
@@ -60,8 +62,9 @@ export default function SaveGoal({
       setWarn?.('목표 만료 기한을 설정해주세요.');
       return;
     }
-    mutate();
+    mutate(); // 목표 제출
   }
+  // 입력란 초기화, 수정 시 기존의 목표를 입력란에 복사
   const [goal, dispatch] = useReducer(
     formReducer,
     _goal ?? {

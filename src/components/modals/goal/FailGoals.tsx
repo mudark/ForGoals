@@ -1,14 +1,14 @@
 import { useUserStore } from '../../../stores/user';
 import { useMutation } from '@tanstack/react-query';
 import SaveDate from '../../SaveDate';
-import { format } from 'date-fns';
 import { useModalStore } from '../../../stores/modal';
+import { formatDay } from '../../../utils/time';
 
 type FailGoalsProps = CommonModalProps & { failed_goals: Goal[] };
 export default function FailGoals({
   setWarn,
   setMsg,
-  failed_goals,
+  failed_goals, // 목표 목록이 변경되면 실패 목표 목록도 변경됨
 }: FailGoalsProps) {
   const { deleteGoal, modifyGoal, addFailure } = useUserStore();
   const { setModal } = useModalStore();
@@ -17,24 +17,34 @@ export default function FailGoals({
     goal: Goal;
   }
   const { mutate: updateDate } = useMutation({
-    mutationFn: async ({ date, goal }: UpdateDateProps) =>
-      modifyGoal(goal, { ...goal, expired_day: format(date, 'yyyy-MM-dd') }),
+    // 실패한 목표 날짜 수정
+    mutationFn: async ({ date, goal }: UpdateDateProps) => {
+      const [res1, res2] = await Promise.all([
+        addFailure(),
+        modifyGoal(goal, { ...goal, expired_day: formatDay(date) }),
+      ]);
+      if (!res1 || !res2) throw new Error();
+      return true;
+    },
     onMutate: () => setMsg('날짜 변경 중...'),
     onError: () => setWarn('날짜 변경을 실패했습니다.'),
-    onSettled: async () => {
+    onSettled: () => {
       setMsg('');
       setModal(null, null);
-      addFailure();
     },
   });
   const { mutate: removeGoal } = useMutation({
-    mutationFn: async (goal: Goal) => deleteGoal(goal),
+    // 실패한 목표 삭제
+    mutationFn: async (goal: Goal) => {
+      const [res1, res2] = await Promise.all([addFailure(), deleteGoal(goal)]);
+      if (!res1 || !res2) throw new Error();
+      return true;
+    },
     onMutate: () => setMsg('목표 삭제 중...'),
     onError: () => setWarn('목표 삭제를 실패했습니다.'),
-    onSettled: async () => {
+    onSettled: () => {
       setMsg('');
       setModal(null, null);
-      addFailure();
     },
   });
   return (

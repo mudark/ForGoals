@@ -10,6 +10,7 @@ interface ModalWarnProps {
   setWarn: (warn: string) => void;
 }
 function ModalWarn({ warn, setWarn }: ModalWarnProps) {
+  // 모달 경고 창, 경고 문구 없으면 경고 창도 없음
   if (warn === '') return null;
   return (
     <div
@@ -37,7 +38,8 @@ interface ModalWarn {
   setWarn: Dispatch<SetStateAction<string>>;
 }
 export default function useModalWarn(): ModalWarn {
+  // 모달 경고 창 훅
   const [warn, setWarn] = useState('');
   const modal_warn = <ModalWarn warn={warn} setWarn={setWarn} />;
-  return { modal_warn, setWarn };
+  return { modal_warn, setWarn }; // 경고 문구는 경고 창에 포함되니 반환할 필요가 없음
 }

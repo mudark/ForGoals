@@ -10,6 +10,7 @@ interface ModalLoadingProps {
   message: string;
 }
 function ModalLoading({ message }: ModalLoadingProps) {
+  // 모달 로딩 창, 메시지 없으면 모달 창도 없음
   if (message === '') return null;
   return (
     <div
@@ -31,7 +32,8 @@ interface ModalLoading {
   setMsg: Dispatch<SetStateAction<string>>;
 }
 export default function useModalLoading(): ModalLoading {
+  // 모달 창 훅
   const [message, setMsg] = useState('');
   const modal_loading = <ModalLoading message={message} />;
-  return { modal_loading, setMsg };
+  return { modal_loading, setMsg }; // 메시지는 모달 창에 포함되니 반환할 필요가 없음
 }

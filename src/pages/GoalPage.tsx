@@ -9,6 +9,7 @@ import BasePage from './BasePage';
 
 export default function GoalPage() {
   const { goals, initGoals, initSuccess, initFailure } = useUserStore();
+  // 실패, 성공 횟수를 변경하려면 초기값이 필요하니 불러옴
   useBaseQuery<number>('goal_failure', initFailure);
   useBaseQuery<number>('goal_success', initSuccess);
   const { modal, setModal } = useModalStore();
@@ -31,6 +32,7 @@ export default function GoalPage() {
   const blue_active_style = 'gradient-btn';
   const title = <h1>당신의 목표</h1>;
   if (isLoading) {
+    // 로딩
     return (
       <BasePage>
         {title}
@@ -47,6 +49,7 @@ export default function GoalPage() {
       </BasePage>
     );
   } else if (isError) {
+    // 에러
     return (
       <BasePage>
         {title}
@@ -55,10 +58,12 @@ export default function GoalPage() {
     );
   }
   function addGoal(e: MouseEvent) {
+    // 목표 생성 모달 호출
     e.preventDefault();
     setModal(SaveGoal, { goal: null });
   }
   function showGoalDetail(e: MouseEvent, goal: Goal) {
+    // 목표 새부 내용 모달 호출
     e.preventDefault();
     setModal(GoalDetail, { goal: goal });
   }

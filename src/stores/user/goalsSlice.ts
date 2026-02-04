@@ -40,7 +40,7 @@ export const createGoalSlice: StateCreator<UserStore, [], [], GoalSlice> = (set,
     return true;
   },
   addSuccess: async () => {
-    return get().setSuccess(get().success + 1);
+    return await get().setSuccess(get().success + 1);
   },
   failure: 0,
   initFailure: (failure) => set({ failure }),
@@ -51,6 +51,6 @@ export const createGoalSlice: StateCreator<UserStore, [], [], GoalSlice> = (set,
     return true;
   },
   addFailure: async () => {
-    return get().setFailure(get().failure + 1);
+    return await get().setFailure(get().failure + 1);
   },
 });

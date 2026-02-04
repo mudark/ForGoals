@@ -6,10 +6,12 @@ import dompurify from 'dompurify';
 type CourseDetailProps = CommonModalProps & { course: Course };
 export default function CourseDetail({ course }: CourseDetailProps) {
   const { data, isLoading, isError } = useQuery({
+    // 강좌 세부 내용 불러오기
     queryKey: ['user', course],
     queryFn: async () => await getKmoocDetail(course),
   });
   if (isLoading)
+    // 로딩
     return (
       <div>
         <h1>강좌를 받아오는 중입니다.</h1>
@@ -31,6 +33,7 @@ export default function CourseDetail({ course }: CourseDetailProps) {
       </div>
     );
   if (isError || !data)
+    // 에러
     return (
       <div>
         <h1>강좌를 불러올 수 없습니다!</h1>

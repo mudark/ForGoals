@@ -11,9 +11,9 @@ export const saveToNotion = async <T>(name: string, data: T) : Promise<boolean> 
   "name": {title: [{text:{content: name}}]},
   "data": {rich_text: [{text: {content: JSON.stringify(data)}}]}
   };
-  console.log("save payload", payload)
+  //console.log("save payload", payload)
   const res = await notion_api.post("/notion/data",{properties: payload});
-  console.log("save res", res)
+  //console.log("save res", res)
   return res!==null;
 }
 // 데이터 받기

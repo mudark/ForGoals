@@ -9,9 +9,11 @@ export default function LogIn({ setWarn, setMsg }: CommonModalProps) {
   //const { setWarn, setMsg } = useModalContext();
   const { logIn } = useUserStore();
   const { setModal } = useModalStore();
+  // 입력란 초기화
   const [id, changeId] = useInput('');
   const [pw, changePw] = useInput('');
   const { mutate } = useMutation({
+    // 로그인
     mutationFn: async (user: User) => logIn(user),
     onMutate: () => setMsg?.('로그인 중...'),
     onSuccess: () => setModal(null, null),

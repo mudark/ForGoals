@@ -1,6 +1,5 @@
 import { useModalStore } from '../../../stores/modal';
 import { useUserStore } from '../../../stores/user';
-import { format } from 'date-fns';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../../../styles/reactCalendar.css';
@@ -18,8 +17,10 @@ export default function HabitDetail({
 }: HabitDetailProps) {
   const setModal = useModalStore((state) => state.setModal);
   const { modifyHabit, deleteHabit } = useUserStore();
+  // 날짜가 기록되어 수정되면 즉시 반영해야 함
   const [habit, setHabit] = useState(_habit);
   const { mutate: saveDate } = useMutation({
+    // 습관 날짜 저장
     mutationFn: async (date_str: string) => {
       const updated_habit = { ...habit, date: [...habit.date, date_str] };
       await modifyHabit(habit, updated_habit);
@@ -30,18 +31,24 @@ export default function HabitDetail({
     onSettled: () => setMsg(''),
   });
   const { mutate: removeHabit } = useMutation({
+    // 습관 삭제
     mutationFn: async () => await deleteHabit(habit),
     onMutate: () => setMsg('습관 삭제 중...'),
     onSuccess: () => setModal(null, null),
     onError: () => setWarn('습관 삭제를 실패했습니다.'),
     onSettled: () => setMsg(''),
   });
+  const addDate = (date: Date | null) => {
+    // 임의의 날을 기록함 (테스트용)
+    if (!date || !habit) return;
+    const date_str = formatDay(date);
+    // 이미 기록되면 아무것도 안 함
+    if (habit.date.includes(date_str)) return;
+    saveDate(date_str);
+  };
   function doHabit() {
     // 오늘 습관을 하면 기록함
-    if (!habit) return;
-    const today = formatDay(new Date());
-    if (habit.date.includes(today)) return;
-    saveDate(today);
+    addDate(new Date());
   }
   function updateHabit() {
     // 습관 수정 모달로 이동
@@ -62,13 +69,6 @@ export default function HabitDetail({
       }
     }
     return '';
-  };
-  const addDate = (_date: Date | null) => {
-    // 임의의 날을 기록함 (테스트용)
-    if (!_date || !habit) return;
-    const date_str = format(_date, 'yyyy-MM-dd');
-    if (habit.date.includes(date_str)) return;
-    saveDate(date_str);
   };
   return (
     <div className={`[&>button]:bg-zinc-400 [&>button]:w-[30%]`}>
